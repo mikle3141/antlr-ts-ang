@@ -42,3 +42,5 @@ target/
 .idea/modules
 
 .idea/misc.xml
+
+.gigaide/
