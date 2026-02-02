@@ -44,3 +44,5 @@ target/
 .idea/misc.xml
 
 .gigaide/
+/my_draft_work/
+/.idea/

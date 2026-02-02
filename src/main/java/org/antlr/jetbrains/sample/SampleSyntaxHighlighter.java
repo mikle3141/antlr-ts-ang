@@ -45,6 +45,8 @@ public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 		createTextAttributesKey("SAMPLE_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
 	public static final TextAttributesKey BLOCK_COMMENT =
 		createTextAttributesKey("SAMPLE_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
+	public static final TextAttributesKey NUMBER =
+		createTextAttributesKey("SAMPLE_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
 
 	static {
 		PSIElementTypeFactory.defineLanguageIElementTypes(SampleLanguage.INSTANCE,
@@ -88,10 +90,14 @@ public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 			case SampleLanguageLexer.STRING :
 				attrKey = STRING;
 				break;
-			case SampleLanguageLexer.COMMENT :
-				attrKey = LINE_COMMENT;
+			case SampleLanguageLexer.INT :
+			case SampleLanguageLexer.FLOAT :
+				attrKey = NUMBER;
 				break;
 			case SampleLanguageLexer.LINE_COMMENT :
+				attrKey = LINE_COMMENT;
+				break;
+			case SampleLanguageLexer.COMMENT :
 				attrKey = BLOCK_COMMENT;
 				break;
 			default :

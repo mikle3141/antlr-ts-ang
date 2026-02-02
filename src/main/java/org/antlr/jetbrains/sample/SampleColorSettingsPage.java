@@ -16,6 +16,7 @@ public class SampleColorSettingsPage implements ColorSettingsPage {
 		new AttributesDescriptor("Identifier", SampleSyntaxHighlighter.ID),
 		new AttributesDescriptor("Keyword", SampleSyntaxHighlighter.KEYWORD),
 		new AttributesDescriptor("String", SampleSyntaxHighlighter.STRING),
+		new AttributesDescriptor("Number", SampleSyntaxHighlighter.NUMBER),
 		new AttributesDescriptor("Line comment", SampleSyntaxHighlighter.LINE_COMMENT),
 		new AttributesDescriptor("Block comment", SampleSyntaxHighlighter.BLOCK_COMMENT),
 	};
