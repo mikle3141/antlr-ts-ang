@@ -28,6 +28,9 @@ public class TypeScriptSyntaxHighlighter extends SyntaxHighlighterBase {
         createTextAttributesKey("TS_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey NUMBER =
         createTextAttributesKey("TS_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
+    /** Декораторы (@Identifier) — по умолчанию синий (как METADATA). */
+    public static final TextAttributesKey DECORATOR =
+        createTextAttributesKey("TS_DECORATOR", DefaultLanguageHighlighterColors.METADATA);
 
     static {
         PSIElementTypeFactory.defineLanguageIElementTypes(TypeScriptLanguage.INSTANCE,

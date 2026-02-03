@@ -15,6 +15,7 @@ public class TypeScriptColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
         new AttributesDescriptor("Identifier", TypeScriptSyntaxHighlighter.ID),
         new AttributesDescriptor("Keyword", TypeScriptSyntaxHighlighter.KEYWORD),
+        new AttributesDescriptor("Decorator", TypeScriptSyntaxHighlighter.DECORATOR),
         new AttributesDescriptor("String", TypeScriptSyntaxHighlighter.STRING),
         new AttributesDescriptor("Number", TypeScriptSyntaxHighlighter.NUMBER),
         new AttributesDescriptor("Line comment", TypeScriptSyntaxHighlighter.LINE_COMMENT),
@@ -43,6 +44,8 @@ public class TypeScriptColorSettingsPage implements ColorSettingsPage {
     @Override
     public String getDemoText() {
         return "/* block comment */\n" +
+            "@Component\n" +
+            "class App { }\n" +
             "function greet(name: string): void {\n" +
             "   // line comment\n" +
             "   const x = 42;\n" +
