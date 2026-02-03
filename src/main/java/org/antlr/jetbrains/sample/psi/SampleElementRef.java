@@ -51,13 +51,9 @@ public abstract class SampleElementRef extends PsiReferenceBase<IdentifierPSINod
 	@Nullable
 	@Override
 	public PsiElement resolve() {
-//		System.out.println(getClass().getSimpleName()+
-//		                   ".resolve("+myElement.getName()+
-//		                   " at "+Integer.toHexString(myElement.hashCode())+")");
-		ScopeNode scope = (ScopeNode)myElement.getContext();
-		if ( scope==null ) return null;
-
-		return scope.resolve(myElement);
+		PsiElement context = myElement.getContext();
+		if ( context == null || !(context instanceof ScopeNode) ) return null;
+		return ((ScopeNode) context).resolve(myElement);
 	}
 
 	@Override

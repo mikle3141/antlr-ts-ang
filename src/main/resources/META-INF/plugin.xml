@@ -1,26 +1,19 @@
 <idea-plugin version="2">
 	<id>org.antlr.jetbrains.sample</id>
-	<name>Sample Jetbrains Plugin</name>
+	<name>TypeScript ANTLR Plugin</name>
 	<version>0.1</version>
-	<vendor email="parrt@antlr.org" url="https://github.com/parrt/sample-jetbrains-plugin">ANTLR Project Sample Jetbrains Plugin</vendor>
+	<vendor email="parrt@antlr.org" url="https://github.com/parrt/sample-jetbrains-plugin">ANTLR Project</vendor>
 
 	<description><![CDATA[
-  <p>Sample plugin</p>
-
-<p>
-<a href="https://github.com/parrt/sample-jetbrains-plugin">Github source</a>
+  <p>TypeScript language support via ANTLR grammar. Files with .ts extension.</p>
   ]]></description>
 
 	<change-notes><![CDATA[
         ]]>
 	</change-notes>
 
-	<!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-	<idea-version since-build="133"/> <!-- requires 13.x, 14.x, 15.x -->
+	<idea-version since-build="133"/>
 
-	<!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-		 on how to target different products -->
-	<!-- uncomment to enable plugin in all products -->
 	<depends>com.intellij.modules.lang</depends>
 
 	<application-components>
@@ -36,21 +29,21 @@
 	</actions>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<fileTypeFactory implementation="org.antlr.jetbrains.sample.SampleFileTypeFactory"/>
-		<lang.syntaxHighlighterFactory language="Sample"
-									   implementationClass="org.antlr.jetbrains.sample.SampleSyntaxHighlighterFactory"/>
+		<fileTypeFactory implementation="org.antlr.jetbrains.sample.TypeScriptFileTypeFactory"/>
+		<lang.syntaxHighlighterFactory language="ANTLRTypeScript"
+									   implementationClass="org.antlr.jetbrains.sample.TypeScriptSyntaxHighlighterFactory"/>
 
-		<lang.parserDefinition language="Sample" implementationClass="org.antlr.jetbrains.sample.SampleParserDefinition"/>
-		<lang.ast.factory language="Sample" implementationClass="org.antlr.jetbrains.sample.SampleASTFactory"/>
+		<lang.parserDefinition language="ANTLRTypeScript" implementationClass="org.antlr.jetbrains.sample.TypeScriptParserDefinition"/>
+		<lang.ast.factory language="ANTLRTypeScript" implementationClass="org.antlr.jetbrains.sample.TypeScriptASTFactory"/>
 
-		<lang.psiStructureViewFactory language="Sample"
-									  implementationClass="org.antlr.jetbrains.sample.structview.SampleStructureViewFactory"/>
+		<lang.psiStructureViewFactory language="ANTLRTypeScript"
+									  implementationClass="org.antlr.jetbrains.sample.structview.TypeScriptStructureViewFactory"/>
 
-		<colorSettingsPage implementation="org.antlr.jetbrains.sample.SampleColorSettingsPage"/>
+		<colorSettingsPage implementation="org.antlr.jetbrains.sample.TypeScriptColorSettingsPage"/>
 
-		<externalAnnotator language="Sample" implementationClass="org.antlr.jetbrains.sample.SampleExternalAnnotator"/>
+		<externalAnnotator language="ANTLRTypeScript" implementationClass="org.antlr.jetbrains.sample.TypeScriptExternalAnnotator"/>
 
-		<lang.findUsagesProvider language="Sample"
-								 implementationClass="org.antlr.jetbrains.sample.SampleFindUsagesProvider"/>
+		<lang.findUsagesProvider language="ANTLRTypeScript"
+								 implementationClass="org.antlr.jetbrains.sample.TypeScriptFindUsagesProvider"/>
 	</extensions>
 </idea-plugin>

@@ -6,7 +6,7 @@ import com.intellij.psi.PsiNamedElement;
 import org.antlr.intellij.adaptor.SymtabUtils;
 import org.antlr.intellij.adaptor.psi.ANTLRPsiNode;
 import org.antlr.intellij.adaptor.psi.ScopeNode;
-import org.antlr.jetbrains.sample.SampleLanguage;
+import org.antlr.jetbrains.sample.TypeScriptLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +22,7 @@ public class BlockSubtree extends ANTLRPsiNode implements ScopeNode {
 //		                   ".resolve("+element.getName()+
 //		                   " at "+Integer.toHexString(element.hashCode())+")");
 
-		return SymtabUtils.resolve(this, SampleLanguage.INSTANCE,
-		                           element, "/block/vardef/ID");
+		return SymtabUtils.resolve(this, TypeScriptLanguage.INSTANCE,
+		                           element, "/program//variableDeclaration/identifier");
 	}
 }

@@ -8,15 +8,15 @@ import com.intellij.util.IncorrectOperationException;
 import org.antlr.intellij.adaptor.lexer.RuleIElementType;
 import org.antlr.intellij.adaptor.psi.ANTLRPsiLeafNode;
 import org.antlr.intellij.adaptor.psi.Trees;
-import org.antlr.jetbrains.sample.SampleLanguage;
-import org.antlr.jetbrains.sample.SampleParserDefinition;
+import org.antlr.jetbrains.sample.TypeScriptLanguage;
+import org.antlr.jetbrains.sample.TypeScriptParserDefinition;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import static org.antlr.jetbrains.sample.parser.SampleLanguageParser.RULE_call_expr;
-import static org.antlr.jetbrains.sample.parser.SampleLanguageParser.RULE_expr;
-import static org.antlr.jetbrains.sample.parser.SampleLanguageParser.RULE_primary;
-import static org.antlr.jetbrains.sample.parser.SampleLanguageParser.RULE_statement;
+import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_arguments;
+import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_singleExpression;
+import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_functionDeclaration;
+import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_variableDeclaration;
 
 /** From doc: "Every element which can be renamed or referenced
  *             needs to implement com.intellij.psi.PsiNamedElement interface."
@@ -72,10 +72,10 @@ public class IdentifierPSINode extends ANTLRPsiLeafNode implements PsiNamedEleme
 			                   kind+this+" at "+Integer.toHexString(this.hashCode()));
 		*/
 		PsiElement newID = Trees.createLeafFromText(getProject(),
-		                                            SampleLanguage.INSTANCE,
+		                                            TypeScriptLanguage.INSTANCE,
 		                                            getContext(),
 		                                            name,
-		                                            SampleParserDefinition.ID);
+		                                            TypeScriptParserDefinition.ID);
 		if ( newID!=null ) {
 			return this.replace(newID); // use replace on leaves but replaceChild on ID nodes that are part of defs/decls.
 		}
@@ -101,13 +101,12 @@ public class IdentifierPSINode extends ANTLRPsiLeafNode implements PsiNamedEleme
 		IElementType elType = parent.getNode().getElementType();
 		// do not return a reference for the ID nodes in a definition
 		if ( elType instanceof RuleIElementType ) {
-			switch ( ((RuleIElementType) elType).getRuleIndex() ) {
-				case RULE_statement :
-				case RULE_expr :
-				case RULE_primary :
-					return new VariableRef(this);
-				case RULE_call_expr :
-					return new FunctionRef(this);
+			int ruleIndex = ((RuleIElementType) elType).getRuleIndex();
+			if ( ruleIndex == RULE_arguments ) {
+				return new FunctionRef(this);
+			}
+			if ( ruleIndex == RULE_singleExpression ) {
+				return new VariableRef(this);
 			}
 		}
 		return null;
