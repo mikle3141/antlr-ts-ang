@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.intellij.platform") version "2.6.0"
     java
     antlr
 }
@@ -12,35 +12,44 @@ group = "antlr"
 version = pluginVersion
 
 tasks.wrapper {
-    gradleVersion = "5.2.1"
+    gradleVersion = "8.13"
 }
 
 tasks.compileJava {
-    sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-    targetCompatibility = JavaVersion.VERSION_1_8.toString()
-}
-
-intellij {
-    version.set(ideaVersion)
-    pluginName.set("antlr4-intellij-plugin-sample")
-    downloadSources.set(true)
-    updateSinceUntilBuild.set(false)
-}
-
-tasks.named("verifyPluginConfiguration") {
-    enabled = false
+    sourceCompatibility = JavaVersion.VERSION_17.toString()
+    targetCompatibility = JavaVersion.VERSION_17.toString()
 }
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 dependencies {
+    intellijPlatform {
+        create(org.jetbrains.intellij.platform.gradle.IntelliJPlatformType.IntellijIdeaUltimate, ideaVersion)
+    }
     antlr("org.antlr:antlr4:$antlr4Version") {
         exclude(group = "com.ibm.icu", module = "icu4j")
     }
     implementation("org.antlr:antlr4-intellij-adaptor:0.1")
-    testImplementation("junit:junit:4.11")
+    testImplementation("junit:junit:4.13.2")
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        name.set("antlr4-intellij-plugin-sample")
+        version.set(pluginVersion)
+        ideaVersion {
+            untilBuild.set(provider { null })
+        }
+    }
+}
+
+tasks.named("verifyPluginProjectConfiguration") {
+    enabled = false
 }
 
 tasks.named<org.gradle.api.plugins.antlr.AntlrTask>("generateGrammarSource") {

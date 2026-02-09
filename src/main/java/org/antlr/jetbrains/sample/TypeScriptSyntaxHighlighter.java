@@ -141,6 +141,9 @@ public class TypeScriptSyntaxHighlighter extends SyntaxHighlighterBase {
             case TypeScriptLexer.BooleanLiteral:
                 attrKey = KEYWORD;
                 break;
+            case TypeScriptLexer.At:
+                attrKey = DECORATOR;
+                break;
             default:
                 return EMPTY_KEYS;
         }
