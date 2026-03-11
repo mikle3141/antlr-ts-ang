@@ -1,5 +1,6 @@
 package org.antlr.jetbrains.sample.psi;
 
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReference;
@@ -14,9 +15,8 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_arguments;
+import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_importStatement;
 import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_singleExpression;
-import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_functionDeclaration;
-import static org.antlr.jetbrains.sample.parser.TypeScriptParser.RULE_variableDeclaration;
 
 /** From doc: "Every element which can be renamed or referenced
  *             needs to implement com.intellij.psi.PsiNamedElement interface."
@@ -97,6 +97,19 @@ public class IdentifierPSINode extends ANTLRPsiLeafNode implements PsiNamedEleme
 	 */
 	@Override
 	public PsiReference getReference() {
+		// If this identifier is inside an import statement (by text), resolve to the export in the target module.
+		PsiElement p = getParent();
+		while (p != null) {
+			String text = p.getText();
+			if (text != null) {
+				String trimmed = text.trim();
+				if (trimmed.startsWith("import ")) {
+					return new ImportRef(this);
+				}
+			}
+			p = p.getParent();
+		}
+
 		PsiElement parent = getParent();
 		IElementType elType = parent.getNode().getElementType();
 		// do not return a reference for the ID nodes in a definition

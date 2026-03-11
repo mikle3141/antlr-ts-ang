@@ -2,8 +2,10 @@ package org.antlr.jetbrains.sample.psi;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.PsiReferenceBase;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.antlr.intellij.adaptor.psi.ScopeNode;
 import org.jetbrains.annotations.NotNull;
@@ -51,9 +53,59 @@ public abstract class SampleElementRef extends PsiReferenceBase<IdentifierPSINod
 	@Nullable
 	@Override
 	public PsiElement resolve() {
+		// First try standard scope-based resolution (locals, parameters, etc.)
 		PsiElement context = myElement.getContext();
-		if ( context == null || !(context instanceof ScopeNode) ) return null;
-		return ((ScopeNode) context).resolve(myElement);
+		if (context instanceof ScopeNode) {
+			PsiElement resolved = ((ScopeNode) context).resolve(myElement);
+			if (resolved != null) {
+				return resolved;
+			}
+		}
+
+		// If nothing found in scopes, fall back to imports in the same file:
+		// usages should jump to the corresponding imported symbol in this file.
+		PsiFile file = myElement.getContainingFile();
+		if (file != null) {
+			PsiElement imported = findImportedIdentifier(file, myElement.getName());
+			if (imported != null) {
+				return imported;
+			}
+		}
+
+		return null;
+	}
+
+	private static @Nullable PsiElement findImportedIdentifier(@NotNull PsiFile file, @Nullable String name) {
+		if (name == null || name.isEmpty()) {
+			return null;
+		}
+		for (IdentifierPSINode id : PsiTreeUtil.findChildrenOfType(file, IdentifierPSINode.class)) {
+			if (!name.equals(id.getText())) {
+				continue;
+			}
+			if (isInImportStatement(id)) {
+				return id;
+			}
+		}
+		return null;
+	}
+
+	private static boolean isInImportStatement(@NotNull PsiElement element) {
+		PsiElement p = element.getParent();
+		while (p != null) {
+			String text = p.getText();
+			if (text != null) {
+				String trimmed = text.trim();
+				if (trimmed.startsWith("import ")
+					|| trimmed.startsWith("import{")
+					|| trimmed.startsWith("import\"")
+					|| trimmed.startsWith("import'")) {
+					return true;
+				}
+			}
+			p = p.getParent();
+		}
+		return false;
 	}
 
 	@Override
