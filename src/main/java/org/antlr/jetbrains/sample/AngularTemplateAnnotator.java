@@ -23,17 +23,17 @@ public class AngularTemplateAnnotator implements Annotator {
 
     private static final Pattern ANGULAR_PATTERN = Pattern.compile(
         "\\{\\{|}}|" +
-            "@if\\b|@for\\b|@switch\\b|@case\\b|@default\\b|" +
+            "@if\\b|@else\\b|@for\\b|@switch\\b|@case\\b|@default\\b|" +
             "@defer\\b|@placeholder\\b|@loading\\b|@error\\b"
     );
 
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
-        if (!(element instanceof PsiFile)) {
+        PsiFile file = element.getContainingFile();
+        if (file == null || !file.getLanguage().is(TypeScriptLanguage.INSTANCE)) {
             return;
         }
-        PsiFile file = (PsiFile) element;
-        if (!file.getLanguage().is(TypeScriptLanguage.INSTANCE)) {
+        if (element != file) {
             return;
         }
 
