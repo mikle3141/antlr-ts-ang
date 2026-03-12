@@ -44,6 +44,7 @@
 		<externalAnnotator language="ANTLRTypeScript" implementationClass="org.antlr.jetbrains.sample.TypeScriptExternalAnnotator"/>
 
 		<annotator language="ANTLRTypeScript" implementationClass="org.antlr.jetbrains.sample.TypeScriptDecoratorAnnotator"/>
+		<annotator language="ANTLRTypeScript" implementationClass="org.antlr.jetbrains.sample.AngularTemplateAnnotator"/>
 
 		<lang.findUsagesProvider language="ANTLRTypeScript"
 								 implementationClass="org.antlr.jetbrains.sample.TypeScriptFindUsagesProvider"/>
